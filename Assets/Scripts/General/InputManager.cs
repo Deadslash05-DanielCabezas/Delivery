@@ -6,14 +6,18 @@ public class InputManager : MonoBehaviour
 
     [SerializeField] private GameObject player;
     private PlayerMovement playerMovement;
+
+    private InputAction moveAction;
     private void Start()
     {
         playerMovement = player.GetComponent<PlayerMovement>();
+
+        moveAction = InputSystem.actions.FindAction("Move");
     }
 
-    public void Move(InputAction.CallbackContext dir)
+    private void Update()
     {
-        Vector2 direction = dir.ReadValue<Vector2>();
-        playerMovement.accelerate();
+        if (moveAction.IsPressed())
+            playerMovement.accelerate();
     }
 }
