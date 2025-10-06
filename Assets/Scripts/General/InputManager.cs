@@ -10,7 +10,7 @@ public class InputManager : MonoBehaviour
     private InputAction moveAction;
 
     private Vector2 moveDirection;
-    private Vector2 oldDirection = new Vector2(0, 0);
+    private Vector2 oldDirection = Vector2.zero;
     private void Start()
     {
         playerMovement = player.GetComponent<PlayerMovement>();
@@ -22,27 +22,11 @@ public class InputManager : MonoBehaviour
     {
 
         if (moveAction.inProgress)
-            playerMovement.accelerate();
+            playerMovement.accelerate(); 
+    }
 
-        if (moveAction.triggered)
-        {
-            moveDirection = moveAction.ReadValue<Vector2>();
-
-            if (moveDirection.x != oldDirection.x)
-            {
-                oldDirection = moveDirection;
-                if (moveDirection.x == -1)
-                    playerMovement.turn(-90);
-                else if (moveDirection.x == 1)
-                    playerMovement.turn(90);
-                else
-                    playerMovement.stopTurning();
-            }
-        }
-
-        if (moveAction.ReadValue<Vector2>() == Vector2.zero)
-        {
-            playerMovement.stopTurning();
-        }    
+    public void Jump(InputAction.CallbackContext ctx)
+    {
+        playerMovement.jump();
     }
 }

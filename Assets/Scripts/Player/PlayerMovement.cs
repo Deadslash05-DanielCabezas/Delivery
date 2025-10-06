@@ -1,60 +1,76 @@
+using Unity.Android.Gradle.Manifest;
 using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour 
 {
-    private Rigidbody rb;
     private Transform t;
+    private CharacterController characterController;
 
     [SerializeField] private float speed;
     [SerializeField] private float maxSpeed = 600;
     [SerializeField] private float acceleration = 4;
     [SerializeField] private float deceleration = 1;
     [SerializeField] private float turnSpeed = 5;
+    [SerializeField] private float jumpPower = 50;
+    [SerializeField] private float fallSpeed = -1;
 
-    private float targetRotation;
-    private float currentRotation;
-    private float newRotation;
+    private Vector3 motion = Vector3.zero;
+    private float verticalVelocity;
+
+    private bool queueJump = false;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
         t = GetComponent<Transform>();
+        characterController = GetComponent<CharacterController>();
     }
 
     private void Update()
     {
-        currentRotation = t.rotation.y;
-        if (!Mathf.Approximately(currentRotation, targetRotation))
+        //Set horizontal motion
+        motion = t.forward * speed;
+
+        //Set falling speed
+        verticalVelocity += fallSpeed;
+
+        //Jump if queued (maybe later add system to allow it to queue a few frames before touching ground)
+        if (queueJump)
         {
-            print("a");
-            newRotation = Mathf.MoveTowardsAngle(currentRotation, targetRotation, turnSpeed);
-            t.rotation = Quaternion.Euler(0, newRotation, 0);
+            verticalVelocity += jumpPower;
+            queueJump = false;
         }
 
-        //Update velocity
-        rb.linearVelocity = speed * t.forward;
+        //Snap to ground
+        if (characterController.isGrounded && verticalVelocity < 0)
+        {
+            verticalVelocity = -2;
+        }
+
+        //Apply motion
+        motion.y = verticalVelocity;
+        characterController.Move(motion * Time.deltaTime);
+
+        //Handle speed deceleration
         speed -= deceleration;
         if (speed < 0)
             speed = 0;
+        
     }
 
-    public void accelerate()
+    public void accelerate() //Accelerate speed (deceleration will still be calculated in Update)
     {
         speed += acceleration;
         if (speed >  maxSpeed)
             speed = maxSpeed;
     }
 
-    public void turn(int angle)
+    public void jump() //Queue a jump action
     {
-        print("c");
-        targetRotation = t.rotation.y + angle;
-    }
-
-    public void stopTurning()
-    {
-        print("d");
-        targetRotation = t.rotation.y;
+        if (characterController.isGrounded)
+        {
+            queueJump = true;
+        }
+            
     }
 }
