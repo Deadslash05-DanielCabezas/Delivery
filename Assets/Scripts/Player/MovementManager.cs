@@ -35,9 +35,9 @@ public class MovementManager : MonoBehaviour
                 normalMovement.HandleMovement(input);
                 break;
 
-            case MovementState.moveState.grind:
+            /*case MovementState.moveState.grind:
                 grindMovement.HandleMovement(input);
-                break;
+                break; */
 
             case MovementState.moveState.wallrun:
                 wallrunMovement.HandleMovement(input);
@@ -60,6 +60,24 @@ public class MovementManager : MonoBehaviour
             case MovementState.moveState.wallrun:
                 wallrunMovement.HandleJump();
                 break;
+        }
+    }
+
+    public void Boost()
+    {
+        switch (movementState.state)
+        {
+            case MovementState.moveState.normal:
+                StartCoroutine(normalMovement.HandleBoost());
+                break;
+
+            /*case MovementState.moveState.grind:
+                grindMovement.HandleJump();
+                break;
+            */
+            /*case MovementState.moveState.wallrun:
+                wallrunMovement.HandleJump();
+                break; */
         }
     }
 

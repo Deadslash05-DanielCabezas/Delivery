@@ -20,7 +20,17 @@ public class MovementData : MonoBehaviour
     public float jumpPower = 50f;
     public float fallSpeed = -1f;
 
+    [Header("Boosting")]
+    public float boostCooldown = 5;
+    public float boostDuration = 2;
+    public float boostAccelerationMultiplier = 1.25f;
+    public float boostMaxSpeedMultiplier = 1.5f;
+
+    [Header("Rail Grinding")]
+    public float railSpeedMultiplier = 1.1f;
+
     [HideInInspector] public Vector3 motion;
     [HideInInspector] public float verticalVelocity;
     [HideInInspector] public bool queueJump = false;
+    [HideInInspector] public bool canBoost = true;
 }
