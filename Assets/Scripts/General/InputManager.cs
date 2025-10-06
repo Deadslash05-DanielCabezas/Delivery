@@ -37,19 +37,10 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-        movementManager.SetInputs(playerInput.actions["Move"].ReadValue<Vector2>(), playerInput.actions["Jump"].ReadValue<float>());
+        movementManager.SetInputs(playerInput.actions["Move"].ReadValue<Vector2>());
     }
 
     // --- Called automatically by PlayerInput via Unity Events ---
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
-
-        // Debug check
-        if (context.performed)
-            Debug.Log($"[InputManager] Move Input: {moveInput}");
-    }
-
     public void OnJump(InputAction.CallbackContext context)
     {
         if (context.performed)

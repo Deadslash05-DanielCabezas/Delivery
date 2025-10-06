@@ -64,10 +64,9 @@ public class MovementManager : MonoBehaviour
     }
 
     // Called externally by InputManager
-    public void SetInputs(Vector2 input, float jump)
+    public void SetInputs(Vector2 input)
     {
         moveInput = input;
-        if(jump > 0) { Jump(); }
 
     }
 }
