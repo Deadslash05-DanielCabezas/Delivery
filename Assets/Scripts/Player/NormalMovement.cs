@@ -27,7 +27,7 @@ public class NormalMovement : MonoBehaviour
         ApplyMotion();
         HandleDeceleration();
 
-        if (moveInput.y > 0) { Accelerate(); }
+        if (moveInput.y > 0) { Accelerate(moveInput.y); }
     }
 
     private void HandleRotation()
@@ -85,9 +85,9 @@ public class NormalMovement : MonoBehaviour
             data.queueJump = true;
     }
 
-    public void Accelerate()
+    public void Accelerate(float scaler)
     {
-        data.speed += data.acceleration;
+        data.speed += data.acceleration * scaler;
         if (data.speed > data.maxSpeed)
             data.speed = data.maxSpeed;
     }

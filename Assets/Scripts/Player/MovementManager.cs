@@ -63,24 +63,6 @@ public class MovementManager : MonoBehaviour
         }
     }
 
-    public void Accelerate()
-    {
-        switch (movementState.state)
-        {
-            case MovementState.moveState.normal:
-                normalMovement.Accelerate();
-                break;
-
-            case MovementState.moveState.grind:
-                grindMovement.Accelerate();
-                break;
-
-            case MovementState.moveState.wallrun:
-                wallrunMovement.Accelerate();
-                break;
-        }
-    }
-
     // Called externally by InputManager
     public void SetInputs(Vector2 input, float jump)
     {
