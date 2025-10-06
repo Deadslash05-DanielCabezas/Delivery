@@ -875,12 +875,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  maxSpeed: 50
-  acceleration: 0.4
+  maxSpeed: 12
+  acceleration: 0.5
   deceleration: 0.1
-  turnSpeed: 5
+  baseTurnSpeed: 30
+  maxTurnIntensity: 4
+  turnBuildUpRate: 2
+  turnDecayRate: 3
+  turnDampingFactor: 50
   jumpPower: 20
-  fallSpeed: -0.1
+  fallSpeed: -1
 --- !u!136 &1836773972
 CapsuleCollider:
   m_ObjectHideFlags: 0
