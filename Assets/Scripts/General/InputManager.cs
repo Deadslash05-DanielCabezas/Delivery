@@ -3,37 +3,59 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject player;
-    private PlayerMovement playerMovement;
+    private MovementManager movementManager;
 
-    private InputAction moveAction;
+    private PlayerInput playerInput;
+    private Vector2 moveInput;
 
     private void Start()
     {
-        playerMovement = player.GetComponent<PlayerMovement>();
-        moveAction = InputSystem.actions.FindAction("Move");
+        if (player == null)
+        {
+            Debug.LogError("InputManager: No player assigned in inspector!");
+            enabled = false;
+            return;
+        }
+
+        movementManager = player.GetComponent<MovementManager>();
+
+        if (movementManager == null)
+        {
+            Debug.LogError("InputManager: Player has no MovementManager component!");
+            enabled = false;
+            return;
+        }
+
+        playerInput = GetComponent<PlayerInput>();
+        if (playerInput == null)
+        {
+            Debug.LogError("No playerInput");
+        }
     }
 
     private void Update()
     {
-        HandleMovementInput();
-        HandleTurnInput();
+        movementManager.SetInputs(playerInput.actions["Move"].ReadValue<Vector2>(), playerInput.actions["Jump"].ReadValue<float>());
     }
 
-    private void HandleMovementInput()
+    // --- Called automatically by PlayerInput via Unity Events ---
+    public void OnMove(InputAction.CallbackContext context)
     {
+        moveInput = context.ReadValue<Vector2>();
 
-        if (moveAction.ReadValue<Vector2>().y > 0) playerMovement.Accelerate();
+        // Debug check
+        if (context.performed)
+            Debug.Log($"[InputManager] Move Input: {moveInput}");
     }
 
-    private void HandleTurnInput()
+    public void OnJump(InputAction.CallbackContext context)
     {
-        Vector2 moveDir = moveAction.ReadValue<Vector2>();
-        playerMovement.SetTurnInput(moveDir.x);
-    }
-
-    public void Jump(InputAction.CallbackContext ctx)
-    {
-        playerMovement.Jump();
+        if (context.performed)
+        {
+            Debug.Log("[InputManager] Jump Input Received");
+            movementManager.Jump();
+        }
     }
 }
