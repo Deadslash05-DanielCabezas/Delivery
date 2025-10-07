@@ -19,4 +19,5 @@ public class WallrunMovement : MonoBehaviour
         // TODO: Jump off wall
     }
     public void Accelerate() { /* handle speed differently */ }
+
 }

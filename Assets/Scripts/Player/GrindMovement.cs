@@ -67,8 +67,8 @@ public class GrindMovement : MonoBehaviour
 
     public void EndRail()
     {
-        data.speed *= data.railSpeedMultiplier;
-        data.maxSpeed *= data.railSpeedMultiplier;
+        data.speed /= data.railSpeedMultiplier;
+        data.maxSpeed /= data.railSpeedMultiplier;
         StopCoroutine( RailUpdate() );
     }
 }

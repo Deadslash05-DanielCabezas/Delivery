@@ -4,26 +4,41 @@ using UnityEngine.SceneManagement;
 public class ColliderDetecter : MonoBehaviour
 {
     private MovementState movementState;
+    Transform t;
+    private MovementData data;
+
+    //Rail variables
+    private bool canRail;
+    private Transform tDestination;
+    private float dot;
 
     private void Start()
     {
+        t = GetComponent<Transform>();
+        data = GetComponent<MovementData>();
         movementState = GetComponent<MovementState>();
+
         if (movementState == null)
             Debug.LogError("ColliderDetecter: Missing MovementState component on this GameObject!");
     }
 
-    private void OnControllerColliderHit(ControllerColliderHit hit)
+    /* private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        EvaluateTag(hit.gameObject.tag);
-    }
+        EvaluateTag(hit.gameObject.tag, hit.gameObject);
+    } */
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("Working");
-        EvaluateTag(other.gameObject.tag);
+        Debug.Log("Working " + other.name);
+        EvaluateTag(other.tag, other.gameObject);
     }
 
-    private void EvaluateTag(string tag)
+    private void OnTriggerExit(Collider other)
+    {
+        EvaluateExitTag(other.tag);
+    }
+
+    public void EvaluateTag(string tag, GameObject collider)
     {
         switch (tag)
         {
@@ -33,8 +48,16 @@ public class ColliderDetecter : MonoBehaviour
                 break;
 
             case "Rail":
-                movementState.ChangeState(MovementState.moveState.grind);
-                Debug.Log("State changed to: Grind");
+                if (movementState.state != MovementState.moveState.grind)
+                {
+                    canRail = RailPositioning(collider);
+                    if (canRail)
+                    {
+                        movementState.ChangeState(MovementState.moveState.grind);
+                        Debug.Log("State changed to: Grind");
+                    }
+                }
+                
                 break;
             case "Floor":
                 movementState.ChangeState(MovementState.moveState.normal);
@@ -67,5 +90,41 @@ public class ColliderDetecter : MonoBehaviour
                 Debug.Log($"Unknown tag detected: {tag}");
                 break;
         }
+    }
+
+    public void EvaluateExitTag(string tag)
+    {
+        switch (tag)
+        {
+            case "Rail":
+                movementState.ChangeState(MovementState.moveState.normal);
+                Debug.Log("State changed to: Normal");
+                break;
+        }
+    }
+
+    private bool RailPositioning(GameObject collider)
+    {
+        tDestination = collider.transform;
+
+        //Check that player is above rail and falling
+        if (t.position.y > tDestination.position.y && data.verticalVelocity <= 0)
+        {
+            //Snap position to rail
+            t.parent = tDestination;
+            t.position = new Vector3(0, tDestination.position.y, t.position.z);
+            t.parent = null;
+
+            //Rotate position to rail forwards or backwards depending on angle you got on
+            dot = Vector3.Dot(t.forward, tDestination.forward);
+            if (dot >= 0)
+                t.forward = tDestination.forward;
+            else
+                t.forward = -tDestination.forward;
+            
+            return true;
+        }
+        else
+            return false; 
     }
 }
