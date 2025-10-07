@@ -1,15 +1,21 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 [RequireComponent(typeof(MovementState))]
 public class ColliderDetecter : MonoBehaviour
 {
     private MovementState movementState;
-    Transform t;
+    private Transform t;
     private MovementData data;
+    private CharacterController controller;
 
     //Rail variables
     private bool canRail;
-    private Transform tDestination;
+    private Transform tCollider;
+    private Transform tRail;
+    private Vector3 snapPoint;
+    private Vector3 railToPlayer;
+    private Vector3 projectedVector;
     private float dot;
 
     private void Start()
@@ -17,6 +23,7 @@ public class ColliderDetecter : MonoBehaviour
         t = GetComponent<Transform>();
         data = GetComponent<MovementData>();
         movementState = GetComponent<MovementState>();
+        controller = GetComponent<CharacterController>();
 
         if (movementState == null)
             Debug.LogError("ColliderDetecter: Missing MovementState component on this GameObject!");
@@ -105,22 +112,26 @@ public class ColliderDetecter : MonoBehaviour
 
     private bool RailPositioning(GameObject collider)
     {
-        tDestination = collider.transform;
+        tCollider = collider.transform;
 
         //Check that player is above rail and falling
-        if (t.position.y > tDestination.position.y && data.verticalVelocity <= 0)
+        if (t.position.y > tCollider.position.y && data.verticalVelocity <= 0)
         {
             //Snap position to rail
-            t.parent = tDestination;
-            t.position = new Vector3(0, tDestination.position.y, t.position.z);
-            t.parent = null;
+            tRail = tCollider.parent.transform;
+            railToPlayer = t.position - tRail.position;
+            projectedVector = Vector3.Project(railToPlayer, tRail.forward);
+            snapPoint = projectedVector + tRail.position;
+            snapPoint.y = tCollider.position.y;
+
+            controller.Move(snapPoint - t.position);
 
             //Rotate position to rail forwards or backwards depending on angle you got on
-            dot = Vector3.Dot(t.forward, tDestination.forward);
+            dot = Vector3.Dot(t.forward, tRail.forward);
             if (dot >= 0)
-                t.forward = tDestination.forward;
+                t.forward = tRail.forward;
             else
-                t.forward = -tDestination.forward;
+                t.forward = -tRail.forward;
             
             return true;
         }
