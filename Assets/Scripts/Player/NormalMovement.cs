@@ -28,15 +28,15 @@ public class NormalMovement : MonoBehaviour
         ApplyMotion();
         HandleDeceleration();
 
-        if (moveInput.y > 0) { Accelerate(moveInput.y); }
+        Accelerate(moveInput.y);
+
+        print(transform.position);
     }
 
     private void HandleRotation()
     {
-        bool switchedDirection =
-            Mathf.Abs(turnInput) > 0.01f &&
-            Mathf.Abs(previousTurnInput) > 0.01f &&
-            Mathf.Sign(turnInput) != Mathf.Sign(previousTurnInput);
+        bool switchedDirection = (turnInput < previousTurnInput) || (turnInput > previousTurnInput);
+        
 
         if (switchedDirection) turnIntensity = 0f;
 

@@ -35,9 +35,9 @@ public class MovementManager : MonoBehaviour
                 normalMovement.HandleMovement(input);
                 break;
 
-            /*case MovementState.moveState.grind:
-                grindMovement.HandleMovement(input);
-                break; */
+            case MovementState.moveState.grind:
+                grindMovement.HandleMovement();
+                break;
 
             case MovementState.moveState.wallrun:
                 wallrunMovement.HandleMovement(input);

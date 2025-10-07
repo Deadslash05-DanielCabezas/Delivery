@@ -14,16 +14,11 @@ public class GrindMovement : MonoBehaviour
         t = transform;
     }
 
-    public IEnumerator RailUpdate()
+    public void HandleMovement()
     {
-        for (; ; )
-        {
-            RailMovement();
-            RailJump();
-            GrindRail();
-            CheckForEnd();
-            yield return null;
-        }
+        RailMovement();
+        RailJump();
+        GrindRail();
     }
 
     private void GrindRail()
@@ -46,12 +41,6 @@ public class GrindMovement : MonoBehaviour
         data.motion = t.forward * data.speed;
     }
 
-    private void CheckForEnd()
-    {
-        if (data.verticalVelocity > 0)
-            EndRail();
-    }
-
     public void HandleJump()
     {
         if (controller.isGrounded)
@@ -62,13 +51,11 @@ public class GrindMovement : MonoBehaviour
         data.speed *= data.railSpeedMultiplier;
         data.maxSpeed *= data.railSpeedMultiplier;
         data.verticalVelocity = -2;
-        StartCoroutine( RailUpdate() );
     }
 
     public void EndRail()
     {
         data.speed /= data.railSpeedMultiplier;
         data.maxSpeed /= data.railSpeedMultiplier;
-        StopCoroutine( RailUpdate() );
     }
 }
