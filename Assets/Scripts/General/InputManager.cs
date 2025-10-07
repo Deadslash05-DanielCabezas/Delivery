@@ -49,4 +49,13 @@ public class InputManager : MonoBehaviour
             movementManager.Jump();
         }
     }
+
+    public void OnBoost(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log("[InputManager] Boost Input Received");
+            movementManager.Boost();
+        }
+    }
 }

@@ -7,6 +7,10 @@ TagManager:
   - Floor
   - Wall
   - Grind
+  - PlayerCamera
+  - Restart
+  - StartTimer
+  - EndTimer
   layers:
   - Default
   - TransparentFX
@@ -14,7 +18,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Rails
   - 
   - 
   - 

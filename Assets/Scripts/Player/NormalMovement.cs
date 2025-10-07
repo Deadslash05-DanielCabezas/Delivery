@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
@@ -92,4 +93,30 @@ public class NormalMovement : MonoBehaviour
             data.speed = data.maxSpeed;
     }
 
+    public IEnumerator HandleBoost()
+    {
+        if (data.canBoost)
+        {
+            data.acceleration *= data.boostAccelerationMultiplier;
+            data.maxSpeed *= data.boostMaxSpeedMultiplier;
+            data.canBoost = false;
+
+
+            GameObject.FindGameObjectWithTag("PlayerCamera").GetComponent<CameraEffects>().TriggerBoost();
+
+            yield return new WaitForSeconds(data.boostDuration);
+
+            data.acceleration /= data.boostAccelerationMultiplier;
+            data.maxSpeed /= data.boostMaxSpeedMultiplier;
+
+            GameObject.FindGameObjectWithTag("PlayerCamera").GetComponent<CameraEffects>().ReleaseBoost();
+
+            yield return new WaitForSeconds(data.boostCooldown);
+
+            data.canBoost = true;
+        }
+
+        StopCoroutine(HandleBoost());
+        yield return null;
+    }
 }

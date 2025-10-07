@@ -1,7 +1,8 @@
 using NUnit.Framework.Constraints;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.XR;
+
+
 
 public class MovementState : MonoBehaviour
 {
@@ -12,7 +13,6 @@ public class MovementState : MonoBehaviour
         wallrun,
     }
 
-
     public moveState state = moveState.normal;
 
 
@@ -20,5 +20,4 @@ public class MovementState : MonoBehaviour
     {
         state = newState;
     }
-    
 }
