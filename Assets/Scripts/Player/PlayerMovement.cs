@@ -23,6 +23,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpPower = 50;
     [SerializeField] private float fallSpeed = -1;
 
+    /*
+    [Header("Spin Setting")]
+    [SerializeField] private bool spinCollider = false;
+    [SerializeField] private float spinMomentun = 0;
+    */
+
     private Vector3 motion = Vector3.zero;
     private float verticalVelocity;
     private bool queueJump = false;
@@ -44,6 +50,7 @@ public class PlayerMovement : MonoBehaviour
         HandleGravityAndJump();
         ApplyMotion();
         HandleDeceleration();
+
     }
 
     private void HandleRotation()

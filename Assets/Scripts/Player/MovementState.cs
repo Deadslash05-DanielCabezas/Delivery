@@ -14,6 +14,7 @@ public class MovementState : MonoBehaviour
         normal,
         grind,
         wallrun,
+        //spinlamp,
     }
 
     public moveState state = moveState.normal;

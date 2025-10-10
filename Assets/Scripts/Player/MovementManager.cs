@@ -8,6 +8,7 @@ public class MovementManager : MonoBehaviour
     private NormalMovement normalMovement;
     private GrindMovement grindMovement;
     private WallrunMovement wallrunMovement;
+    //private SpinlampMovement spinlampMovement:
 
     private Vector2 moveInput;
 
@@ -19,6 +20,7 @@ public class MovementManager : MonoBehaviour
         normalMovement = GetComponent<NormalMovement>();
         grindMovement = GetComponent<GrindMovement>();
         wallrunMovement = GetComponent<WallrunMovement>();
+        // spinlampMovement = GetComponent<SpinlampMovement>();
     }
 
     private void Update()
@@ -42,6 +44,10 @@ public class MovementManager : MonoBehaviour
             case MovementState.moveState.wallrun:
                 wallrunMovement.HandleMovement(input);
                 break;
+
+            /*case MovementState.moveState.spinlamp:
+                    spinlampMovement.HandleJump(input);
+                    break; */
         }
     }
 
@@ -60,6 +66,10 @@ public class MovementManager : MonoBehaviour
             case MovementState.moveState.wallrun:
                 wallrunMovement.HandleJump();
                 break;
+
+            /*case MovementState.moveState.spinlamp:
+                    spinlampMovement.HandleJump(input);
+                    break; */
         }
     }
 
@@ -71,13 +81,17 @@ public class MovementManager : MonoBehaviour
                 StartCoroutine(normalMovement.HandleBoost());
                 break;
 
-            /*case MovementState.moveState.grind:
-                grindMovement.HandleJump();
-                break;
-            */
-            /*case MovementState.moveState.wallrun:
-                wallrunMovement.HandleJump();
-                break; */
+                /*case MovementState.moveState.grind:
+                    grindMovement.HandleJump();
+                    break;
+                */
+                /*case MovementState.moveState.wallrun:
+                    wallrunMovement.HandleJump();
+                    break; */
+
+                /*case MovementState.moveState.spinlamp:
+                    spinlampMovement.HandleJump(input);
+                    break; */
         }
     }
 

@@ -20,6 +20,12 @@ public class MovementData : MonoBehaviour
     public float jumpPower = 50f;
     public float fallSpeed = -1f;
 
+    /*
+    [Header("Spin Setting")]
+    [SerializeField] private bool spinCollider = false;
+    [SerializeField] private float spinMomentun = 0;
+    */
+
     [Header("Boosting")]
     public float boostCooldown = 5;
     public float boostDuration = 2;
