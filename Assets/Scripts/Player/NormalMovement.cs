@@ -27,10 +27,10 @@ public class NormalMovement : MonoBehaviour
         HandleGravityAndJump();
         ApplyMotion();
         HandleDeceleration();
-
+        //HandleSpin();
         Accelerate(moveInput.y);
 
-        print(transform.position);
+        //print();
     }
 
     private void HandleRotation()
@@ -48,6 +48,19 @@ public class NormalMovement : MonoBehaviour
         float effectiveTurnSpeed = data.baseTurnSpeed * (1f / (1f + data.speed / data.turnDampingFactor));
         t.Rotate(Vector3.up, turnIntensity * effectiveTurnSpeed * Time.deltaTime);
         previousTurnInput = turnInput;
+    }
+
+    private void HandleSpin()
+    {
+        
+
+        //transform.RotateAround(Target.position, Vector3.up,50*Time.deltaTime);
+        //Cuando el personaje detecte que entrado en Pivot Area
+        //Comprobación de si gha enviado un input por teclado
+        //Calculos de la rotación del objecto manteniendo la velocidad de entrad
+        //Comprobar la dirección de entrada del jugador
+            //Inplementar un sistema de orbitas
+        //Salir del bucle cuando el jugador le de al input por teclado para salir y salir con x velocidad
     }
 
     private void HandleHorizontalMotion()
