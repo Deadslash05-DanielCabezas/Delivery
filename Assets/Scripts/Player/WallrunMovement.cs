@@ -33,7 +33,8 @@ public class WallrunMovement : MonoBehaviour
         {
             data.verticalVelocity += data.jumpPower;
             t.forward = -t.forward;
-            data.motion = data.wallJumpHorizontalPower * t.forward;
+            data.speed = data.wallJumpHorizontalPower;
+            data.motion = data.speed * t.forward;
             data.queueJump = false;
         }
     }
