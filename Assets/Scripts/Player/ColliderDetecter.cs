@@ -9,14 +9,22 @@ public class ColliderDetecter : MonoBehaviour
     private MovementData data;
     private CharacterController controller;
 
-    //Rail variables
-    private bool canRail;
+    //Rail and Wall variables
     private Transform tCollider;
-    private Transform tRail;
     private Vector3 snapPoint;
-    private Vector3 railToPlayer;
     private Vector3 projectedVector;
     private float dot;
+
+    //Rail variables
+    private bool canRail;
+    private Transform tRail;
+    private Vector3 railToPlayer;
+
+    //Wall variables
+    private bool canWall;
+    private Collider wallCollider;
+    private Transform tWall;
+
 
     private void Start()
     {
@@ -50,8 +58,16 @@ public class ColliderDetecter : MonoBehaviour
         switch (tag)
         {
             case "Wall":
-                movementState.ChangeState(MovementState.moveState.wallrun);
-                Debug.Log("State changed to: Wallrun");
+                if (movementState.state != MovementState.moveState.wallrun)
+                {
+                    canWall = WallPositioning(collider);
+                    if (canWall)
+                    {
+                        movementState.ChangeState(MovementState.moveState.wallrun);
+                        Debug.Log("State changed to: Wall");
+                    }
+                }
+
                 break;
 
             case "Rail":
@@ -66,6 +82,7 @@ public class ColliderDetecter : MonoBehaviour
                 }
                 
                 break;
+
             case "Floor":
                 movementState.ChangeState(MovementState.moveState.normal);
                 Debug.Log("State changed to: Normal");
@@ -107,6 +124,11 @@ public class ColliderDetecter : MonoBehaviour
                 movementState.ChangeState(MovementState.moveState.normal);
                 Debug.Log("State changed to: Normal");
                 break;
+
+            case "Wall":
+                movementState.ChangeState(MovementState.moveState.normal);
+                Debug.Log("State changed to: Normal");
+                break;
         }
     }
 
@@ -137,5 +159,27 @@ public class ColliderDetecter : MonoBehaviour
         }
         else
             return false; 
+    }
+
+    private bool WallPositioning(GameObject collider)
+    {
+        tCollider = collider.transform;
+
+        //Check that player is looking at wall
+        if (Vector3.Angle(t.forward, -tCollider.right) < data.maxWallAngleDifference) //maxWallAngleDifference = 10 for now
+        {
+            //Snap to wall
+            tWall = tCollider.parent.transform;
+            wallCollider = tCollider.parent.GetComponent<Collider>();
+            snapPoint = wallCollider.ClosestPoint(t.position);
+            controller.Move(snapPoint - t.position);
+
+            //Rotate position 90º of the wall
+            t.forward = -tWall.right;
+
+            return true;
+        }
+        else
+            return false;
     }
 }

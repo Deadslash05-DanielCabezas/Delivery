@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class FootCollisions : MonoBehaviour
+public class PlayerCollisions : MonoBehaviour
 {
     private GameObject player;
     private ColliderDetecter detecter;

@@ -5,9 +5,11 @@ using UnityEngine.XR;
 public class MovementState : MonoBehaviour
 {
     private GrindMovement grind;
+    private WallrunMovement wallrun;
     private void Start()
     {
         grind = GetComponent<GrindMovement>();
+        wallrun = GetComponent<WallrunMovement>();
     }
     public enum moveState
     {
@@ -29,12 +31,23 @@ public class MovementState : MonoBehaviour
         switch(state)
         {
             case moveState.normal:
+
                 if (oldState == moveState.grind)
-                    grind.EndRail(); 
+                    grind.EndRail();
+
+                else if (oldState == moveState.wallrun)
+                    wallrun.EndWall();
+
                 break;
 
             case moveState.grind:
-                grind.StartRail(); 
+                grind.StartRail();
+
+                break;
+
+            case moveState.wallrun:
+                wallrun.StartWall();
+
                 break;
         }
     }

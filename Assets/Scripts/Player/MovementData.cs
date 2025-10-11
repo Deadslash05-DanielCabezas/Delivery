@@ -29,8 +29,16 @@ public class MovementData : MonoBehaviour
     [Header("Rail Grinding")]
     public float railSpeedMultiplier = 1.1f;
 
+    [Header("Wall Jumping")]
+    public float wallFallSpeed = -0.2f;
+    public float wallJumpHorizontalPower = 50;
+    public float wallTimeUntilFall = 1.2f;
+    [HideInInspector] public float maxWallAngleDifference = 10; //Ignorad por ahora
+
     [HideInInspector] public Vector3 motion;
     [HideInInspector] public float verticalVelocity;
     [HideInInspector] public bool queueJump = false;
     [HideInInspector] public bool canBoost = true;
+
+    [HideInInspector] public float wallFallTimer;
 }

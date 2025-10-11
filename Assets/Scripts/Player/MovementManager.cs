@@ -40,7 +40,7 @@ public class MovementManager : MonoBehaviour
                 break;
 
             case MovementState.moveState.wallrun:
-                wallrunMovement.HandleMovement(input);
+                wallrunMovement.HandleMovement();
                 break;
         }
     }

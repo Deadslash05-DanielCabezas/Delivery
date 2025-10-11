@@ -29,8 +29,6 @@ public class NormalMovement : MonoBehaviour
         HandleDeceleration();
 
         Accelerate(moveInput.y);
-
-        print(transform.position);
     }
 
     private void HandleRotation()
